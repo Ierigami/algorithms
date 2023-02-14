@@ -1,0 +1,30 @@
+#include <iostream>;
+#include <stdio.h>;
+#include <stdlib.h>;
+#include <time.h>;
+#define m 100
+using namespace std;
+
+void input(int x[], int n) {
+	if ((n > 0) && (n < m)) {
+		srand(time(0));
+		for (int i = 0; i < n; i++) {
+			x[i] = 100 + rand() % 300;
+		}
+	}
+}
+
+void output(int x[], int n) {
+	for (int i = 0; i < n; i++) {
+		cout << x[i] << endl;
+	}
+}
+
+
+int main() {
+	int x[m], n;
+	cout << "ввести количество обрабатываемых элементов массива";
+	cin >> n;
+	input(x, n);
+	output(x, n);
+}
