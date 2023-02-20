@@ -2,6 +2,7 @@
 #include <stdio.h>;
 #include <stdlib.h>;
 #include <time.h>;
+
 #define m 100
 using namespace std;
 
@@ -21,10 +22,73 @@ void output(int x[], int n) {
 }
 
 
+
+int check_condition(int x[], int n, bool check, int num) {
+	int el, lt; //el - знач. эл-та массива, lt - цифра знач-я эл-та массива
+	bool Cont = false;
+	for (int i = 0; i < n; i++) {
+		if (Cont == true) {
+			Cont = false;
+			continue;
+		}
+		el = x[i];
+		int C = num;
+		check = true;
+		while ((C > 0)&&(check = true)) {
+			lt = C % 10;
+			if (el % lt == 0) {
+				check = true;
+			}
+			else {
+				check = false;
+			}
+			C /= 10;
+		}
+		if (check == true) {
+			n = n + 1;
+			for (int j = (n-1); j > (i + 1); j--) {
+				x[j] = x[j - 1];
+			}
+			x[i + 1] = rand();
+			Cont = true;
+		}
+		
+	}
+	return n;
+}
+
+int del(int x[], int n) {
+	int e = n;
+	int count = 0;
+	for (int i = 0; i < e; i++) {
+		if (x[i] % 3 == 0) {
+			while (x[i] % 3 == 0) {
+				for (int j = i; j < e; j++) {
+				x[j] = x[j + 1];
+				}
+				count += 1;
+			}
+		}
+	}
+	n -= count;
+	return n;
+}
+
+
 int main() {
-	int x[m], n;
-	cout << "ввести количество обрабатываемых элементов массива";
+	setlocale(0, "");
+	int x[m], n, num;
+	bool check = true;
+	cout << "ввести количество обрабатываемых элементов массива: ";
 	cin >> n;
+	cout << "ввести число, на которое делим элементы массива: ";
+	cin >> num;
 	input(x, n);
 	output(x, n);
+	n = check_condition(x, n, check, num);
+	cout << endl;
+	output(x, n);
+	//n = del(x, n);
+	//cout << endl;
+	//output(x, n);
 }
