@@ -1,3 +1,4 @@
+
 #include <iostream>;
 #include <stdio.h>;
 #include <stdlib.h>;
@@ -23,48 +24,45 @@ void output(int x[], int n) {
 
 
 
-int check_condition(int x[], int n, bool check, int num) {
-	int el, lt; //el - знач. эл-та массива, lt - цифра знач-я эл-та массива
-	bool Cont = false;
+int check(int x[], int n){
+	int c; //цифра элемента массива
 	for (int i = 0; i < n; i++) {
-		if (Cont == true) {
-			Cont = false;
-			continue;
-		}
-		el = x[i];
-		int C = num;
-		check = true;
-		while ((C > 0)&&(check = true)) {
-			lt = C % 10;
-			if (el % lt == 0) {
-				check = true;
+		bool N = true;
+		int el = x[i]; //элемент массива
+		while (el > 0) {
+			c = el % 10;
+			if (c == 0) {
+				N = false;
+				break;
 			}
-			else {
-				check = false;
+			if (x[i] % c != 0) {
+				N = false;
+				break;
 			}
-			C /= 10;
+			el /= 10;
 		}
-		if (check == true) {
-			n = n + 1;
-			for (int j = (n-1); j > (i + 1); j--) {
-				x[j] = x[j - 1];
-			}
-			x[i + 1] = rand();
-			Cont = true;
+		if (N) {
+			return i;
 		}
-		
 	}
-	return n;
+	return -1;
 }
 
-int del(int x[], int n) {
+void paste(int x[], int n, int v) {
+	for (int i = n; i > (v + 1); i--) {
+		x[i] = x[i - 1];
+	}
+	x[v + 1] = rand();
+}
+
+int de(int x[], int n) {
 	int e = n;
 	int count = 0;
 	for (int i = 0; i < e; i++) {
 		if (x[i] % 3 == 0) {
 			while (x[i] % 3 == 0) {
 				for (int j = i; j < e; j++) {
-				x[j] = x[j + 1];
+					x[j] = x[j + 1];
 				}
 				count += 1;
 			}
@@ -74,21 +72,26 @@ int del(int x[], int n) {
 	return n;
 }
 
-
 int main() {
 	setlocale(0, "");
-	int x[m], n, num;
-	bool check = true;
+	int x[m], n, Q, v;
 	cout << "ввести количество обрабатываемых элементов массива: ";
 	cin >> n;
-	cout << "ввести число, на которое делим элементы массива: ";
-	cin >> num;
 	input(x, n);
 	output(x, n);
-	n = check_condition(x, n, check, num);
-	cout << endl;
-	output(x, n);
-	//n = del(x, n);
-	//cout << endl;
-	//output(x, n);
+	cout << "Ввеите номер задания: " << endl;
+	cin >> Q;
+	if (Q == 1) {
+		v = check(x, n);
+		cout << v << endl;
+	}
+	else if (Q == 2) {
+		paste(x, n, v);
+		n += 1;
+		output(x, n);
+	}
+	else if (Q == 3) {
+		n = de(x, n);
+		output(x, n);
+	}
 }
