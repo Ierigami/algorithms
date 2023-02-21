@@ -3,6 +3,7 @@
 #include <stdio.h>;
 #include <stdlib.h>;
 #include <time.h>;
+#include <vector>;
 
 #define m 100
 using namespace std;
@@ -24,7 +25,7 @@ void output(int x[], int n) {
 
 
 
-int check(int x[], int n){
+int check(int x[], int n) {
 	int c; //цифра элемента массива
 	for (int i = 0; i < n; i++) {
 		bool N = true;
@@ -72,26 +73,112 @@ int de(int x[], int n) {
 	return n;
 }
 
+
+void inpvect(int n, vector <int> &myVector) {
+	srand(time(0));
+	for (int i = 0; i < n; i++) {
+		myVector[i] = 100 + rand() % 300;
+	}
+}
+
+void outvect(int n, vector <int> myVector) {
+	for (int i = 0; i < n; i++) {
+		cout << myVector[i] << endl;
+	}
+}
+
+int checkvect(int n, vector <int> myVector) {
+	int c; //цифра элемента массива
+	for (int i = 0; i < n; i++) {
+		bool N = true;
+		int el = myVector[i]; //элемент массива
+		while (el > 0) {
+			c = el % 10;
+			if (c == 0) {
+				N = false;
+				break;
+			}
+			if (myVector[i] % c != 0) {
+				N = false;
+				break;
+			}
+			el /= 10;
+		}
+		if (N) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+void pastevect(int k, vector <int> &myVector) {
+	myVector.insert(myVector.begin() + (k+1), 3);
+}
+
+void delvect(int n, vector <int> &myVector) {
+	/*for (int i = 0; i < myVector.size(); i++) {
+		if (myVector[i] % 3 == 0) {
+			myVector.erase(myVector.begin() + i);
+		}
+	}*/
+
+	auto it = myVector.begin();
+	while (it != myVector.end()) {
+		if (*it % 3 == 0) {
+			it = myVector.erase(it);
+		}
+		else {
+			it++;
+		}
+	}
+}
+
 int main() {
 	setlocale(0, "");
-	int x[m], n, Q, v;
+	int x[m], n, v = 0, Q;
 	cout << "ввести количество обрабатываемых элементов массива: ";
 	cin >> n;
-	input(x, n);
-	output(x, n);
-	cout << "Ввеите номер задания: " << endl;
+	cout << "введите 1, если статический массив, 2, если динамический, 3 - вектор: " << endl;
 	cin >> Q;
 	if (Q == 1) {
+		input(x, n);
+		output(x, n);
+
+		cout << endl;
+
 		v = check(x, n);
 		cout << v << endl;
-	}
-	else if (Q == 2) {
+
 		paste(x, n, v);
 		n += 1;
 		output(x, n);
-	}
-	else if (Q == 3) {
+
+		cout << endl;
+
 		n = de(x, n);
 		output(x, n);
 	}
+	else if (Q == 2) {
+
+	}
+	else if (Q == 3) {
+		vector <int> myVector(n);
+		inpvect(n, myVector);
+		outvect(n, myVector);
+
+		cout << endl;
+
+		/*int k = checkvect(n, myVector);
+		cout << k << endl;
+
+		pastevect(k, myVector);
+		outvect(n, myVector);*/
+
+		delvect(n, myVector);
+		outvect(n, myVector);
+	}
+		
+
+	
+  
 }
