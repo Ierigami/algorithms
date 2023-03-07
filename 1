@@ -1,4 +1,5 @@
 
+
 #include <iostream>;
 #include <stdio.h>;
 #include <stdlib.h>;
@@ -9,17 +10,20 @@
 using namespace std;
 
 void input(int x[], int n) {
-	if ((n > 0) && (n < m)) {
+	/*if ((n > 0) && (n < m)) {
 		srand(time(0));
 		for (int i = 0; i < n; i++) {
 			x[i] = 100 + rand() % 300;
-		}
+		}*/
+	cout << "Введите n-е количество элементов массива" << endl;
+	for (int i = 0; i < n; i++){
+		cin >> x[i];
 	}
 }
 
 void output(int x[], int n) {
 	for (int i = 0; i < n; i++) {
-		cout << x[i] << endl;
+		cout << x[i] << " ";
 	}
 }
 
@@ -49,46 +53,7 @@ int check(int x[], int n) {
 	return -1;
 }
 
-void paste(int x[], int n, int v) {
-	for (int i = n; i > (v + 1); i--) {
-		x[i] = x[i - 1];
-	}
-	x[v + 1] = rand();
-}
-
-int de(int x[], int n) {
-	int e = n;
-	int count = 0;
-	for (int i = 0; i < e; i++) {
-		if (x[i] % 3 == 0) {
-			while (x[i] % 3 == 0) {
-				for (int j = i; j < e; j++) {
-					x[j] = x[j + 1];
-				}
-				count += 1;
-			}
-		}
-	}
-	n -= count;
-	return n;
-}
-
-void indin(int arr[], int n) {
-	if ((n > 0) && (n < m)) {
-		srand(time(0));
-		for (int i = 0; i < n; i++) {
-			arr[i] = 100 + rand() % 300;
-		}
-	}
-}
-
-void outdin(int arr[], int n) {
-	for (int i = 0; i < n; i++) {
-		cout << arr[i] << endl;
-	}
-}
-
-int checkdin(int arr[], int n) {
+int checkdin(int *arr, int n) {
 	int c; //цифра элемента массива
 	for (int i = 0; i < n; i++) {
 		bool N = true;
@@ -112,20 +77,46 @@ int checkdin(int arr[], int n) {
 	return -1;
 }
 
+void paste(int x[], int n, int v) {
+	for (int i = n; i > (v + 1); i--) {
+		x[i] = x[i - 1];
+	}
+	cout << "Введите элемент, которых необходимо вставить в массив" << endl;
+	cin >> x[v + 1];
+}
+
+int de(int x[], int n) {
+	int e = n;
+	int count = 0;
+	for (int i = 0; i < e; i++) {
+		if (x[i] % 3 == 0) {
+			while (x[i] % 3 == 0) {
+				for (int j = i; j < e; j++) {
+					x[j] = x[j + 1];
+				}
+				count += 1;
+			}
+		}
+	}
+	n -= count;
+	return n;
+}
 
 int* pastedin(int* arr, int n, int v) {
-	arr = (int*) realloc(arr, sizeof(int) * (n + 1));
+	arr = (int*)realloc(arr, sizeof(int) * (n + 1));
 	for (int i = n; i > (v + 1); i--) {
 		arr[i] = arr[i - 1];
 	}
-	arr[v + 1] = rand();
+	int l;
+	cout << "Введите элемент, который необходимо вставить в массив" << endl;
+	cin >> arr[v + 1];
 	return arr;
 }
 
 void inpvect(int n, vector <int>& myVector) {
 	srand(time(0));
 	for (int i = 0; i < n; i++) {
-		myVector[i] = 100 + rand() % 300;
+		cin >> myVector[i];
 	}
 }
 
@@ -160,33 +151,32 @@ int checkvect(int n, vector <int> myVector) {
 }
 
 
-void pastevect(int k, vector <int>& myVector) {
-	myVector.insert(myVector.begin() + (k + 1), 3);
-}
-
-void delvect(int n, vector <int>& myVector) {
-	for (size_t i = 0, j = myVector.size(); i < j; ++i)
-		if (myVector.at(i) % 3 == 0) {
-			myVector.erase(myVector.begin() + i - 1);
-		}
-}
-
-int c(int *arr, int n, int count) {
-	for (int i = 0; i < n; i++) {
-		if (arr[i] % 3 == 0) {
-			count += 1;
-		}
+void pastevect(int k, vector <int>& myVector, int &n) {
+	if (k != -1) {
+		int l;
+		cout << "Введите элемент, который необходимо вставить вектор";
+		cin >> l;
+		myVector.insert(myVector.begin() + (k + 1), l);
+		n++;
 	}
-	return count;
+}
+	
+
+void delvect(int &n, vector <int>& myVector) {
+	for (int i = 0; i < myVector.size(); i++)
+		if (myVector[i] % 3 == 0) {
+			myVector.erase(myVector.begin() + i);
+			n--;
+		}
 }
 
-int* deldin(int* arr, int n, int count) {
+int* deldin(int* arr, int &n) {
 	for (int i = 0; i < n; i++) {
 		if (arr[i] % 3 == 0) {
 			for (int j = i; j < n; j++) {
 				arr[j] = arr[j + 1];
 			}
-			arr = (int*)realloc(arr, sizeof(int) * (n));
+			arr = (int*)realloc(arr, sizeof(int) * (n-1));
 			n -= 1;
 		}
 	}
@@ -202,12 +192,15 @@ int main() {
 	cin >> Q;
 	if (Q == 1) {
 		input(x, n);
+
+		cout << "Введенный массив: ";
+
 		output(x, n);
 
 		cout << endl;
 
 		v = check(x, n);
-		cout << v << endl;
+		cout << "Индекс элемента, значение которого делится на каждую цифру числа";
 
 		paste(x, n, v);
 		n += 1;
@@ -221,32 +214,30 @@ int main() {
 	else if (Q == 2) {
 		int count = 0;
 		int* arr = new int[n];
-		                                      
-		indin(arr, n);
+
+		input(arr, n);
 
 		cout << endl;
 
-		outdin(arr, n);
+		output(arr, n);
 
 		v = checkdin(arr, n);
+
+		cout << v << endl;
 
 		arr = pastedin(arr, n, v);
 		n++;
 
 		cout << endl;
 
-		outdin(arr, n);
+		output(arr, n);
+
+		arr = deldin(arr, n);
 
 		cout << endl;
 
-		count = c(arr, n, count);
+		output(arr, n);
 
-		cout << count << endl;
-
-		n -= count;
-		arr = deldin(arr, n, count);
-
-		outdin(arr, n);
 	}
 	else if (Q == 3) {
 		vector <int> myVector(n);
@@ -255,14 +246,16 @@ int main() {
 
 		cout << endl;
 
-		/*int k = checkvect(n, myVector);
+		int k = checkvect(n, myVector);
 		cout << k << endl;
 
-		pastevect(k, myVector);
-		outvect(n, myVector);*/
+		pastevect(k, myVector, n);
+		
+		outvect(n, myVector);
 
-		//delvect(n, myVector);
-		//outvect(n, myVector);
+		cout << endl;
+
+		delvect(n, myVector);
+		outvect(n, myVector);
 	}
 }
-
