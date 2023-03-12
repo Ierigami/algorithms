@@ -15,7 +15,7 @@ void input(int x[], int n) {
 			x[i] = 100 + rand() % 300;
 		}*/
 	cout << "Введите n-е количество элементов массива" << endl;
-	for (int i = 0; i < n; i++){
+	for (int i = 0; i < n; i++) {
 		cin >> x[i];
 	}
 }
@@ -52,7 +52,7 @@ int check(int x[], int n) {
 	return -1;
 }
 
-int checkdin(int *arr, int n) {
+int checkdin(int* arr, int n) {
 	int c; //цифра элемента массива
 	for (int i = 0; i < n; i++) {
 		bool N = true;
@@ -80,7 +80,7 @@ void paste(int x[], int n, int v) {
 	for (int i = n; i > (v + 1); i--) {
 		x[i] = x[i - 1];
 	}
-	cout << "Введите элемент, которых необходимо вставить в массив" << endl;
+	cout << "Введите элемент, который необходимо вставить в массив: ";
 	cin >> x[v + 1];
 }
 
@@ -107,13 +107,14 @@ int* pastedin(int* arr, int n, int v) {
 		arr[i] = arr[i - 1];
 	}
 	int l;
-	cout << "Введите элемент, который необходимо вставить в массив" << endl;
+	cout << "Введите элемент, который необходимо вставить в массив: ";
 	cin >> arr[v + 1];
 	return arr;
 }
 
 void inpvect(int n, vector <int>& myVector) {
 	srand(time(0));
+	cout << "Введите n-е количество элементов вектора: ";
 	for (int i = 0; i < n; i++) {
 		cin >> myVector[i];
 	}
@@ -121,7 +122,7 @@ void inpvect(int n, vector <int>& myVector) {
 
 void outvect(int n, vector <int> myVector) {
 	for (int i = 0; i < n; i++) {
-		cout << myVector[i] << endl;
+		cout << myVector[i] << " ";
 	}
 }
 
@@ -150,18 +151,18 @@ int checkvect(int n, vector <int> myVector) {
 }
 
 
-void pastevect(int k, vector <int>& myVector, int &n) {
+void pastevect(int k, vector <int>& myVector, int& n) {
 	if (k != -1) {
 		int l;
-		cout << "Введите элемент, который необходимо вставить вектор";
+		cout << "Введите элемент, который необходимо вставить в вектор: ";
 		cin >> l;
 		myVector.insert(myVector.begin() + (k + 1), l);
 		n++;
 	}
 }
-	
 
-void delvect(int &n, vector <int>& myVector) {
+
+void delvect(int& n, vector <int>& myVector) {
 	for (int i = 0; i < myVector.size(); i++)
 		if (myVector[i] % 3 == 0) {
 			myVector.erase(myVector.begin() + i);
@@ -169,13 +170,13 @@ void delvect(int &n, vector <int>& myVector) {
 		}
 }
 
-int* deldin(int* arr, int &n) {
+int* deldin(int* arr, int& n) {
 	for (int i = 0; i < n; i++) {
 		if (arr[i] % 3 == 0) {
 			for (int j = i; j < n; j++) {
 				arr[j] = arr[j + 1];
 			}
-			arr = (int*)realloc(arr, sizeof(int) * (n-1));
+			arr = (int*)realloc(arr, sizeof(int) * (n - 1));
 			n -= 1;
 		}
 	}
@@ -184,77 +185,110 @@ int* deldin(int* arr, int &n) {
 
 int main() {
 	setlocale(0, "");
-	int x[m], n, v = 0, Q;
+	int n, v = 0, Q, z;
+	int x[m];
+	int count = 0;
 	cout << "ввести количество обрабатываемых элементов массива: ";
 	cin >> n;
+	int* arr = new int[n];
+	vector <int> myVector(n);
 	cout << "введите 1, если статический массив, 2, если динамический, 3 - вектор: " << endl;
 	cin >> Q;
+
 	if (Q == 1) {
+		
 		input(x, n);
-
-		cout << "Введенный массив: ";
-
-		output(x, n);
-
 		cout << endl;
-
-		v = check(x, n);
-		cout << "Индекс элемента, значение которого делится на каждую цифру числа";
-
-		paste(x, n, v);
-		n += 1;
-		output(x, n);
-
-		cout << endl;
-
-		n = de(x, n);
-		output(x, n);
 	}
 	else if (Q == 2) {
-		int count = 0;
-		int* arr = new int[n];
-
 		input(arr, n);
-
-		cout << endl;
-
-		output(arr, n);
-
-		v = checkdin(arr, n);
-
-		cout << v << endl;
-
-		arr = pastedin(arr, n, v);
-		n++;
-
-		cout << endl;
-
-		output(arr, n);
-
-		arr = deldin(arr, n);
-
-		cout << endl;
-
-		output(arr, n);
-
 	}
 	else if (Q == 3) {
-		vector <int> myVector(n);
 		inpvect(n, myVector);
-		outvect(n, myVector);
+	}
 
-		cout << endl;
+	bool type1 = false;
+	while (true) {
+		cout << "Введите номер задания: ";
+		cin >> z;
 
-		int k = checkvect(n, myVector);
-		cout << k << endl;
+		if (Q == 1) {
+			if (z == 1) {
+				v = check(x, n);
+				cout << "Индекс элемента, значение которого делится на каждую цифру числа: " << v << endl;
+				type1 = true;
+			}
+			if (z == 2) {
+				if (type1) {
+					paste(x, n, v);
+					n += 1;
+					cout << "Массив, полученный после вставки элемента: ";
+					output(x, n);
+					cout << endl;
+				}
+				else {
+					cout << "Невозможно выполнить задание, так как индекс элемента не был найден" << endl;
+				}
+			}
+			if (z == 3) {
+				n = de(x, n);
+				cout << "Массив, полученный после удаления элементов, кратных трём: ";
+				output(x, n);
+				cout << endl;
+			}
+		}
+		else if (Q == 2) {
+			if (z == 1) {
+				v = checkdin(arr, n);
+				cout << "Индекс элемента, значение которого делится на каждую цфиру числа: " << v << endl;
+				type1 = true;
+			}
+			if (z == 2) {
+				if (type1) {
+					arr = pastedin(arr, n, v);
+					n++;
+					cout << "Массив, полученный после вставки элемента: ";
+					output(arr, n);
+					cout << endl;
+				}
+				else {
+					cout << "Невоможно выполнить задание, так как индекс элемента еще не был обнаружен" << endl;
+				}
+			}
+			if (z == 3) {
+				arr = deldin(arr, n);
+				cout << endl << "Массив, полученный после удаления элементов, кратных трём: ";
+				output(arr, n);
+				cout << endl;
+			}
+		}
+		else if (Q == 3) {
+			if (z == 1) {
+				v = checkvect(n, myVector);
+				cout << "Индекс элемента, значение которого делится на каждую из цифр числа: " << v << endl;
+				type1 = true;
+			}
+			if (z == 2) {
+				if (type1) {
 
-		pastevect(k, myVector, n);
-		
-		outvect(n, myVector);
+					pastevect(v, myVector, n);
 
-		cout << endl;
+					cout << "Массив, полученный после вставки элемента: ";
+					outvect(n, myVector);
 
-		delvect(n, myVector);
-		outvect(n, myVector);
+					cout << endl;
+				}
+				else {
+					cout << "Невоможно выполнить задание, так как индекс элемента еще не был обнаружен" << endl;
+				}
+			}
+			if (z == 3) {
+				delvect(n, myVector);
+
+				cout << "Массив, полученный после удаления элементов, кратных трём: ";
+				outvect(n, myVector);
+				cout << endl;
+			}
+		}
 	}
 }
