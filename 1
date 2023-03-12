@@ -77,11 +77,13 @@ int checkdin(int* arr, int n) {
 }
 
 void paste(int x[], int n, int v) {
-	for (int i = n; i > (v + 1); i--) {
-		x[i] = x[i - 1];
+	if (v != -1) {
+		for (int i = n; i > (v + 1); i--) {
+			x[i] = x[i - 1];
+		}
+		cout << "Введите элемент, который необходимо вставить в массив: ";
+		cin >> x[v + 1];
 	}
-	cout << "Введите элемент, который необходимо вставить в массив: ";
-	cin >> x[v + 1];
 }
 
 int de(int x[], int n) {
@@ -102,18 +104,20 @@ int de(int x[], int n) {
 }
 
 int* pastedin(int* arr, int n, int v) {
-	arr = (int*)realloc(arr, sizeof(int) * (n + 1));
-	for (int i = n; i > (v + 1); i--) {
-		arr[i] = arr[i - 1];
+	if (v != -1) {
+		arr = (int*)realloc(arr, sizeof(int) * (n + 1));
+		for (int i = n; i > (v + 1); i--) {
+			arr[i] = arr[i - 1];
+		}
+		int l;
+		cout << "Введите элемент, который необходимо вставить в массив: ";
+		cin >> arr[v + 1];
+		return arr;
 	}
-	int l;
-	cout << "Введите элемент, который необходимо вставить в массив: ";
-	cin >> arr[v + 1];
-	return arr;
 }
 
 void inpvect(int n, vector <int>& myVector) {
-	srand(time(0));
+	//srand(time(0));
 	cout << "Введите n-е количество элементов вектора: ";
 	for (int i = 0; i < n; i++) {
 		cin >> myVector[i];
@@ -151,12 +155,12 @@ int checkvect(int n, vector <int> myVector) {
 }
 
 
-void pastevect(int k, vector <int>& myVector, int& n) {
-	if (k != -1) {
+void pastevect(int v, vector <int>& myVector, int& n) {
+	if (v != -1) {
 		int l;
 		cout << "Введите элемент, который необходимо вставить в вектор: ";
 		cin >> l;
-		myVector.insert(myVector.begin() + (k + 1), l);
+		myVector.insert(myVector.begin() + (v + 1), l);
 		n++;
 	}
 }
@@ -188,12 +192,13 @@ int main() {
 	int n, v = 0, Q, z;
 	int x[m];
 	int count = 0;
-	cout << "ввести количество обрабатываемых элементов массива: ";
+	cout << "Введите количество обрабатываемых элементов массива: ";
 	cin >> n;
 	int* arr = new int[n];
 	vector <int> myVector(n);
-	cout << "введите 1, если статический массив, 2, если динамический, 3 - вектор: " << endl;
+	cout << "Введите 1, если статический массив, 2, если динамический, 3 - вектор: ";
 	cin >> Q;
+	cout << endl;
 
 	if (Q == 1) {
 		
@@ -219,7 +224,7 @@ int main() {
 				type1 = true;
 			}
 			if (z == 2) {
-				if (type1) {
+				if ((type1)&&(v != -1)) {
 					paste(x, n, v);
 					n += 1;
 					cout << "Массив, полученный после вставки элемента: ";
@@ -227,7 +232,7 @@ int main() {
 					cout << endl;
 				}
 				else {
-					cout << "Невозможно выполнить задание, так как индекс элемента не был найден" << endl;
+					cout << "Невозможно выполнить задание" << endl;
 				}
 			}
 			if (z == 3) {
@@ -244,15 +249,15 @@ int main() {
 				type1 = true;
 			}
 			if (z == 2) {
-				if (type1) {
-					arr = pastedin(arr, n, v);
-					n++;
-					cout << "Массив, полученный после вставки элемента: ";
-					output(arr, n);
-					cout << endl;
+				if ((type1)&&(v != -1)) {
+						arr = pastedin(arr, n, v);
+						n++;
+						cout << "Массив, полученный после вставки элемента: ";
+						output(arr, n);
+						cout << endl;
 				}
 				else {
-					cout << "Невоможно выполнить задание, так как индекс элемента еще не был обнаружен" << endl;
+					cout << "Невоможно выполнить задание" << endl;
 				}
 			}
 			if (z == 3) {
@@ -269,7 +274,7 @@ int main() {
 				type1 = true;
 			}
 			if (z == 2) {
-				if (type1) {
+				if ((type1)&&(v!=1)) {
 
 					pastevect(v, myVector, n);
 
@@ -279,7 +284,7 @@ int main() {
 					cout << endl;
 				}
 				else {
-					cout << "Невоможно выполнить задание, так как индекс элемента еще не был обнаружен" << endl;
+					cout << "Невоможно выполнить задание" << endl;
 				}
 			}
 			if (z == 3) {
