@@ -1,4 +1,3 @@
-
 #include <iostream>;
 #include <stdio.h>;
 #include <stdlib.h>;
@@ -167,21 +166,26 @@ void pastevect(int v, vector <int>& myVector, int& n) {
 
 
 void delvect(int& n, vector <int>& myVector) {
-	for (int i = 0; i < myVector.size(); i++)
-		if (myVector[i] % 3 == 0) {
-			myVector.erase(myVector.begin() + i);
-			n--;
+	for (int i = 0; i < myVector.size(); i++) {
+		while (myVector[i] % 3 == 0) {
+			if (myVector[i] % 3 == 0) {
+				myVector.erase(myVector.begin() + i);
+				n--;
+			}
 		}
+	}
 }
 
 int* deldin(int* arr, int& n) {
 	for (int i = 0; i < n; i++) {
-		if (arr[i] % 3 == 0) {
-			for (int j = i; j < n; j++) {
-				arr[j] = arr[j + 1];
+		while (arr[i] % 3 == 0) {
+			if (arr[i] % 3 == 0) {
+				for (int j = i; j < n; j++) {
+					arr[j] = arr[j + 1];
+				}
+				arr = (int*)realloc(arr, sizeof(int) * (n - 1));
+				n -= 1;
 			}
-			arr = (int*)realloc(arr, sizeof(int) * (n - 1));
-			n -= 1;
 		}
 	}
 	return arr;
