@@ -122,24 +122,24 @@ int check_stat(char(&arr)[M][N], int m, int n) {
 		for (int j = 0; j < m; j++) {  //по столбцу
 
 			//перебор по вертикали
-			if (arr[j][i] == 'x') {
+			/*if (arr[j][i] == 'x') {
 				vertical++;
 			}
 			else if (arr[j][i] != 'x') {
 				vertical = 0;
-			}
+			}*/
 
-			//перебор по правой диагонали
-			if (i == j) {
-				if (arr[i][j] == 'x') {
-					right_diagonal++;
-				}
-				else {
-					right_diagonal = 0;
-				}
-			}
+			////перебор по правой диагонали
+			//if (i == j) {
+			//	if (arr[i][j] == 'x') {
+			//		right_diagonal++;
+			//	}
+			//	else {
+			//		right_diagonal = 0;
+			//	}
+			//}
 
-			//перебор по горизонтали
+			////перебор по горизонтали
 			if (arr[i][j] == 'x') {
 				horizontal++;
 			}
@@ -147,16 +147,18 @@ int check_stat(char(&arr)[M][N], int m, int n) {
 				horizontal = 0;
 			}
 
-			//перебор по левой диагонали
-			if (i + j == m + 1) {
-				if (arr[i][j] == 'x') {
-					left_diagonal++;
-				}
-				else {
-					left_diagonal = 0;
-				}
-			}
+			////перебор по левой диагонали
+			//if (i + j == m - 1) {
+			//	if (arr[i][j] == 'x') {
+			//		left_diagonal++;
+			//	}
+			//	else {
+			//		left_diagonal = 0;
+			//	}
+			//}
+			cout << horizontal << " ";
 		}
+		cout << "\n";
 		if ((horizontal >= 5) && (!hor_flag)) {
 			cout << "победа крестиков по горизонтали" << endl;
 			hor_flag = true;
@@ -230,7 +232,7 @@ int check_din(char** arr, int m, int n) {
 			}
 
 			//перебор по левой диагонали
-			if (i + j == m + 1) {
+			if (i + j == m - 1) {
 				if (arr[i][j] == 'x') {
 					left_diagonal++;
 				}
@@ -375,10 +377,10 @@ void simple_input_vect(int m, int n, vector<vector<char>> &vct) {
 }
 
 //функция для заполнения вектора рандомными числами 
-void random_input_vect(int m, int n, vector<vector<char>> vct) {
+void random_input_vect(int m, int n, vector<vector<char>> &vct) {
 	srand(time(0));
 	int c = 0;
-	for (int i = 0; i < (n - 1); i++) {
+	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			c = rand() / 100;
 			if (c % 2 == 0) {
@@ -390,7 +392,7 @@ void random_input_vect(int m, int n, vector<vector<char>> vct) {
 		}
 	}
 	cout << "Полученный двумерный вектор: " << endl;
-	for (int i = 0; i < (n - 1); i++) {
+	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			cout << vct[i][j] << " ";
 		}
@@ -405,8 +407,14 @@ int main() {
 	cout << "Введите количество строк и столбцов массива: : ";
 	cin >> n >> m;
 
+	if ((m < 5) || (n < 5)) {
+		cout << "В этой игре условие победы невыполнимо" << endl << "Конец!" << endl;
+		return 0;
+
+	}
+
 	int Q; //выбор типа массива 
-	cout << "Выберите тип массива для работы: " << endl << "1 - статический массив;" << endl << "2 - динамический массив; " << endl << "3 - вектор;" << "Ввод: "; 
+	cout << "Выберите тип массива для работы: " << endl << "1 - статический массив;" << endl << "2 - динамический массив; " << endl << "3 - вектор;" << endl <<  "Ввод: "; 
 	cin >> Q; 
 
 	if (Q == 1) {
@@ -431,7 +439,7 @@ int main() {
 		//динамический массив 
 
 		int E; //выбор типа ввода
-		cout << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+		cout << endl <<  "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
 		cin >> E;
 		if (E == 1) {
 			char** arr = simple_input_din(m, n);
@@ -446,30 +454,19 @@ int main() {
 		 
 		//вектор
 
-		nt E; //выбор типа ввода
-		cout << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
-		cin >> E;
-		if (E == 1) {
+
+		vector<vector<char>> vct(n, vector<char>(m));
+		int R; //выбор типа ввода
+		cout << endl <<  "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+		cin >> R;
+		if (R == 1) {
+			simple_input_vect(m, n, vct);
+		}
+		else {
+			random_input_vect(m, n, vct);
+		}
+		check_vect(vct, m, n);
 	}
-
-
-	//к динамиxскому массиву
-	
-
-	/*if ((n < 5) || (m < 5)) {
-		cout << "В этой игре нет выигравших, так как  недостаточно игровых полей." << endl;
-		return 0;
-	}*/
-
-	 //для динамического массива и статического
-
-
-	//к статическому массиву 
-	
-	//к вектору
-	vector<vector<char>> vct(n, vector<char>(m));
-	simple_input_vect(m, n, vct);
-	check_vect(vct, m, n);
 }
 
 
