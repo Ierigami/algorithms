@@ -3,6 +3,7 @@
 #include "stdlib.h"
 #include "time.h";
 #include <vector>;
+#include <list>;
 
 using namespace std;
 
@@ -17,14 +18,21 @@ char** simple_input_din(int m, int n) {
 	for (int i = 0; i < n; i++) {
 		arr[i] = new char[m]; //создание n строк из m элементов
 	}
-	cout << "Введите крестики/нолики в вашей матрице построчно: " << endl;
+	cout << "Введите крестики/нолики в вашей матрице построчно: (крестики - 'x' в английской раскладке)" << endl;
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			cin >> arr[i][j];
 		}
 	}
+	
 	cout << endl << "Полученная матрица: " << endl;
+	cout << "     ";
 	for (int i = 0; i < n; i++) {
+		cout << i << " : ";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		cout << " " << i << " : ";
 		for (int j = 0; j < m; j++) {
 			cout << arr[i][j] << " : ";
 		}
@@ -36,14 +44,20 @@ char** simple_input_din(int m, int n) {
 //функция для заполнения статического массива вручную 
 void simple_input_stat(int m, int n, char(&arr)[M][N]) {
 
-	cout << "Введите крестики/нолики в вашей матрице построчно: " << endl;
+	cout << "Введите крестики/нолики в вашей матрице построчно: (крестики - 'x' в английской раскладке)" << endl;
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			cin >> arr[i][j];
 		}
 	}
 	cout << endl << "Полученная матрица: " << endl;
+	cout << "     ";
 	for (int i = 0; i < n; i++) {
+		cout << i << " : ";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		cout << " " << i << " : ";
 		for (int j = 0; j < m; j++) {
 			cout << arr[i][j] << " : ";
 		}
@@ -67,8 +81,15 @@ void random_input_stat(int m, int n, char(&arr)[M][N]) {
 			}
 		}
 	}
+	
 	cout << endl << "Полученная матрица: " << endl;
+	cout << "     ";
 	for (int i = 0; i < n; i++) {
+		cout << i << " : ";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		cout << " " << i << " : ";
 		for (int j = 0; j < m; j++) {
 			cout << arr[i][j] << " : ";
 		}
@@ -97,7 +118,14 @@ char** random_input_din(int m, int n) {
 		}
 	}
 	cout << endl << "Полученная матрица: " << endl;
+	cout << "     ";
 	for (int i = 0; i < n; i++) {
+		cout << i << " : ";
+	}
+	cout << endl;
+
+	for (int i = 0; i < n; i++) {
+		cout << " " << i << " : ";
 		for (int j = 0; j < m; j++) {
 			cout << arr[i][j] << " : ";
 		}
@@ -107,277 +135,8 @@ char** random_input_din(int m, int n) {
 }
 
 
-//функция для проверки условия для статического массива
-int check_stat(char(&arr)[M][N], int m, int n) {
-	bool hor_flag = false;
-	bool vert_flag = false;
-	bool right_diag_flag = false;
-	bool left_diag_flag = false;
-
-	int horizontal = 0;
-	int vertical = 0;
-	int right_diagonal = 0;
-	int left_diagonal = 0;
-	for (int i = 0; i < n; i++) { //по строке
-		for (int j = 0; j < m; j++) {  //по столбцу
-
-			//перебор по вертикали
-			/*if (arr[j][i] == 'x') {
-				vertical++;
-			}
-			else if (arr[j][i] != 'x') {
-				vertical = 0;
-			}*/
-
-			////перебор по правой диагонали
-			//if (i == j) {
-			//	if (arr[i][j] == 'x') {
-			//		right_diagonal++;
-			//	}
-			//	else {
-			//		right_diagonal = 0;
-			//	}
-			//}
-
-			////перебор по горизонтали
-			if (arr[i][j] == 'x') {
-				horizontal++;
-			}
-			else {
-				horizontal = 0;
-			}
-
-			////перебор по левой диагонали
-			//if (i + j == m - 1) {
-			//	if (arr[i][j] == 'x') {
-			//		left_diagonal++;
-			//	}
-			//	else {
-			//		left_diagonal = 0;
-			//	}
-			//}
-			cout << horizontal << " ";
-		}
-		cout << "\n";
-		if ((horizontal >= 5) && (!hor_flag)) {
-			cout << "победа крестиков по горизонтали" << endl;
-			hor_flag = true;
-		}
-		horizontal = 0; //c переходом на следующую строку переменная обнуляется, чтобы начать подсчет уже для следующей строки
-		if ((vertical >= 5) && (!vert_flag)) {
-			cout << "победа крестиков по вертикали" << endl;
-			vert_flag = true;
-		}
-
-
-		//cout << "Промежуточное значение вертикали: " << vertical << endl;   //проверка промежуточных значений
-
-
-		vertical = 0; //с переходом на следующий столбец переменная обнуляется, чтобы начать подсчёт уже для следующего столбца
-		if ((right_diagonal >= 5) && (!right_diag_flag)) {
-			cout << "Победа крестиков по правой диагонали" << endl;
-			right_diag_flag = true;
-		}
-		if ((left_diagonal >= 5) && (!left_diag_flag)) {
-			cout << "Победа крестиков по левой диагонали" << endl;
-			left_diag_flag = true;
-		}
-		//для диагонали обнуление не требуется;
-	}
-	if ((!hor_flag) && (!vert_flag) && (!right_diag_flag) && (!left_diag_flag)) {
-		cout << "В этой игре крестики не одержали победу" << endl;
-	}
-	return 0;
-}
-
-//функция проверки условия для динамического массива 
-int check_din(char** arr, int m, int n) {
-	//проход по горизонтали
-	bool hor_flag = false;
-	bool vert_flag = false;
-	bool right_diag_flag = false;
-	bool left_diag_flag = false;
-
-	int horizontal = 0;
-	int vertical = 0;
-	int right_diagonal = 0;
-	int left_diagonal = 0;
-	for (int i = 0; i < n; i++) { //по строке
-		for (int j = 0; j < m; j++) {  //по столбцу
-
-			//перебор по вертикали
-			if (arr[j][i] == 'x') {
-				vertical++;
-			}
-			else if (arr[j][i] != 'x') {
-				vertical = 0;
-			}
-
-			//перебор по правой диагонали
-			if (i == j) {
-				if (arr[i][j] == 'x') {
-					right_diagonal++;
-				}
-				else {
-					right_diagonal = 0;
-				}
-			}
-
-			//перебор по горизонтали
-			if (arr[i][j] == 'x') {
-				horizontal++;
-			}
-			else {
-				horizontal = 0;
-			}
-
-			//перебор по левой диагонали
-			if (i + j == m - 1) {
-				if (arr[i][j] == 'x') {
-					left_diagonal++;
-				}
-				else {
-					left_diagonal = 0;
-				}
-			}
-		}
-		if ((horizontal >= 5) && (!hor_flag)) {
-			cout << "победа крестиков по горизонтали" << endl;
-			hor_flag = true;
-		}
-		horizontal = 0; //c переходом на следующую строку переменная обнуляется, чтобы начать подсчет уже для следующей строки
-		if ((vertical >= 5) && (!vert_flag)) {
-			cout << "победа крестиков по вертикали" << endl;
-			vert_flag = true;
-		}
-
-
-		//cout << "Промежуточное значение вертикали: " << vertical << endl;   //проверка промежуточных значений
-
-
-		vertical = 0; //с переходом на следующий столбец переменная обнуляется, чтобы начать подсчёт уже для следующего столбца
-		if ((right_diagonal >= 5) && (!right_diag_flag)) {
-			cout << "Победа крестиков по правой диагонали" << endl;
-			right_diag_flag = true;
-		}
-		if ((left_diagonal >= 5) && (!left_diag_flag)) {
-			cout << "Победа крестиков по левой диагонали" << endl;
-			left_diag_flag = true;
-		}
-		//для диагонали обнуление не требуется;
-	}
-	if ((!hor_flag) && (!vert_flag) && (!right_diag_flag) && (!left_diag_flag)) {
-		cout << "В этой игре крестики не одержали победу" << endl;
-	}
-	return 0;
-}
-
-//функция для проверки условия для вектора
-int check_vect(vector<vector<char>> vct, int m, int n) {
-	//проход по горизонтали
-	bool hor_flag = false;
-	bool vert_flag = false;
-	bool right_diag_flag = false;
-	bool left_diag_flag = false;
-
-	int horizontal = 0;
-	int vertical = 0;
-	int right_diagonal = 0;
-	int left_diagonal = 0;
-	for (int i = 0; i < n; i++) { //по строке
-		for (int j = 0; j < m; j++) {  //по столбцу
-
-			//перебор по вертикали
-			if (vct[j][i] == 'x') {
-				vertical++;
-			}
-			else if (vct[j][i] != 'x') {
-				vertical = 0;
-			}
-
-			//перебор по правой диагонали
-			if (i == j) {
-				if (vct[i][j] == 'x') {
-					right_diagonal++;
-				}
-				else {
-					right_diagonal = 0;
-				}
-			}
-
-			//перебор по горизонтали
-			if (vct[i][j] == 'x') {
-				horizontal++;
-			}
-			else {
-				horizontal = 0;
-			}
-
-			//перебор по левой диагонали
-			if (i + j == m - 1) {
-				if (vct[i][j] == 'x') {
-					left_diagonal++;
-				}
-				else {
-					left_diagonal = 0;
-				}
-			}
-		}
-		if ((horizontal >= 5) && (!hor_flag)) {
-			cout << "победа крестиков по горизонтали" << endl;
-			hor_flag = true;
-		}
-		horizontal = 0; //c переходом на следующую строку переменная обнуляется, чтобы начать подсчет уже для следующей строки
-		if ((vertical >= 5) && (!vert_flag)) {
-			cout << "победа крестиков по вертикали" << endl;
-			vert_flag = true;
-		}
-
-		vertical = 0; //с переходом на следующий столбец переменная обнуляется, чтобы начать подсчёт уже для следующего столбца
-		if ((right_diagonal >= 5) && (!right_diag_flag)) {
-			cout << "Победа крестиков по правой диагонали" << endl;
-			right_diag_flag = true;
-		}
-		if ((left_diagonal >= 5) && (!left_diag_flag)) {
-			cout << "Победа крестиков по левой диагонали" << endl;
-			left_diag_flag = true;
-		}
-		//для диагонали обнуление не требуется;
-	}
-	if ((!hor_flag) && (!vert_flag) && (!right_diag_flag) && (!left_diag_flag)) {
-		cout << "В этой игре крестики не одержали победу" << endl;
-	}
-
-	cout << endl << "Полученная матрица: " << endl;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cout << vct[i][j] << " : ";
-		}
-		cout << endl;
-	}
-
-	return 0;
-}
-
-//функция для заполнения вектора вручную
-void simple_input_vect(int m, int n, vector<vector<char>> &vct) {
-	cout << "Введите крестики/нолики построчно" << endl;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cin >> vct[i][j];
-		}
-	}
-	cout << "Полученный двумерный вектор: " << endl;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cout << vct[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
-
 //функция для заполнения вектора рандомными числами 
-void random_input_vect(int m, int n, vector<vector<char>> &vct) {
+void random_input_vect(int m, int n, vector<vector<char>>& vct) {
 	srand(time(0));
 	int c = 0;
 	for (int i = 0; i < n; i++) {
@@ -392,13 +151,381 @@ void random_input_vect(int m, int n, vector<vector<char>> &vct) {
 		}
 	}
 	cout << "Полученный двумерный вектор: " << endl;
+	cout << "     ";
 	for (int i = 0; i < n; i++) {
+		cout << i << " : ";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		cout << " " << i << " : ";
 		for (int j = 0; j < m; j++) {
-			cout << vct[i][j] << " ";
+			cout << vct[i][j] << " : ";
 		}
 		cout << endl;
 	}
 }
+
+//функция для заполнения вектора введенными числами 
+void simple_input_vect(int m, int n, vector<vector<char>>& vct) {
+	cout << "Введите крестики/нолики в вашей матрице построчно: (крестики - 'x' в английской раскладке)" << endl;
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			cin >> vct[i][j];
+		}
+	}
+	cout << "     ";
+	for (int i = 0; i < n; i++) {
+		cout << i << " : ";
+	}
+	cout << endl;
+	for (int i = 0; i < n; i++) {
+		cout << " " << i << " : ";
+		for (int j = 0; j < m; j++) {
+			cout << vct[i][j] << " : ";
+		}
+		cout << endl;
+	}
+}
+
+//функция для проверки условия для статического массива
+int check_stat(char(&arr)[M][N], int m, int n) {
+	bool hor_flag = false;
+	bool vert_flag = false;
+	bool right_diag_flag = false;
+	bool left_diag_flag = false;
+
+	int horizontal = 0;
+	int vertical = 0;
+	int right_diagonal = 0;
+	int left_diagonal = 0;
+
+	list <int> vert; //список с номерами вертикалей, на которых было получено >= 5 крестиков 
+	list <int> hor; //cписок с номерами горизонталей, на которых было получено >= 5 крестиков 
+
+	for (int i = 0; i < n; i++) { //по строке
+		for (int j = 0; j < m; j++) {  //по столбцу
+
+
+			//перебор по вертикали
+			if (arr[j][i] == 'x') {
+				vertical++;
+			}
+			else if (arr[j][i] != 'x') {
+				vertical = 0;
+			}
+
+			if (vertical == 5) {
+				vert_flag = true;
+				vert.insert(vert.end(), i);
+			}
+
+			
+
+			//перебор по горизонтали
+			if (arr[i][j] == 'x') {
+				horizontal++;
+			}
+			else {
+				horizontal = 0;
+			}
+
+			if (horizontal >= 5) {
+				hor_flag = true;
+				hor.insert(hor.end(), i);
+			}
+
+
+			//перебор по правой диагонали
+			if (i == j) {
+				if (arr[i][j] == 'x') {
+					right_diagonal++;
+				}
+				else {
+					right_diagonal = 0;
+				}
+			}
+
+			if ((right_diagonal >= 5) && (!right_diag_flag)) {
+				right_diag_flag = true;
+			}
+
+
+			//перебор по левой диагонали
+			if (i + j == m - 1) {
+				if (arr[i][j] == 'x') {
+					left_diagonal++;
+				}
+				else {
+					left_diagonal = 0;
+				}
+			}
+
+			if ((left_diagonal >= 5) && (!left_diag_flag)) {
+				left_diag_flag = true;
+			}
+		}
+		vertical = 0; //с переходом на следующий столбец переменная обнуляется, чтобы начать подсчёт уже для следующего столбца
+		horizontal = 0; //c переходом на следующую строку переменная обнуляется, чтобы начать подсчет уже для следующей строки
+	}
+
+	if (hor_flag) {
+		cout << endl << "Победа крестиков по горизонталям: ";
+		hor.unique();
+		list <int> ::iterator it;
+		for (it = hor.begin(); it != hor.end(); it++) {
+			cout << (*it) << " : ";
+		}
+		cout << endl;
+	}
+
+	if (vert_flag) {
+		cout << endl << "Победа крестиков по вертикалям: ";
+		vert.unique();
+		list <int> ::iterator it;
+		for (it = vert.begin(); it != vert.end(); it++) {
+			cout << (*it) << " : ";
+		}
+		cout << endl;
+	}
+	
+	if (right_diag_flag) {
+		cout << "Победа крестиков по главной диагонали." << endl;
+	}
+	if (left_diag_flag) {
+		cout << "Победа крестиков по побочной диагонали." << endl;
+	}
+	if ((!hor_flag) && (!vert_flag) && (!right_diag_flag) && (!left_diag_flag)) {
+		cout << "В этой игре крестики не одержали победу" << endl;
+	}
+	return 0;
+}
+
+//функция проверки условия для динамического массива 
+int check_din(char** arr, int m, int n) {
+	bool hor_flag = false;
+	bool vert_flag = false;
+	bool right_diag_flag = false;
+	bool left_diag_flag = false;
+
+	int horizontal = 0;
+	int vertical = 0;
+	int right_diagonal = 0;
+	int left_diagonal = 0;
+
+	list <int> vert; //список с номерами вертикалей, на которых было получено >= 5 крестиков 
+	list <int> hor; //cписок с номерами горизонталей, на которых было получено >= 5 крестиков 
+
+	for (int i = 0; i < n; i++) { //по строке
+		for (int j = 0; j < m; j++) {  //по столбцу
+
+
+			//перебор по вертикали
+			if (arr[j][i] == 'x') {
+				vertical++;
+			}
+			else if (arr[j][i] != 'x') {
+				vertical = 0;
+			}
+
+			if (vertical == 5) {
+				vert_flag = true;
+				vert.insert(vert.end(), i);
+			}
+
+
+
+			//перебор по горизонтали
+			if (arr[i][j] == 'x') {
+				horizontal++;
+			}
+			else {
+				horizontal = 0;
+			}
+
+			if (horizontal >= 5) {
+				hor_flag = true;
+				hor.insert(hor.end(), i);
+			}
+
+
+			//перебор по правой диагонали
+			if (i == j) {
+				if (arr[i][j] == 'x') {
+					right_diagonal++;
+				}
+				else {
+					right_diagonal = 0;
+				}
+			}
+
+			if ((right_diagonal >= 5) && (!right_diag_flag)) {
+				right_diag_flag = true;
+			}
+
+
+			//перебор по левой диагонали
+			if (i + j == m - 1) {
+				if (arr[i][j] == 'x') {
+					left_diagonal++;
+				}
+				else {
+					left_diagonal = 0;
+				}
+			}
+
+			if ((left_diagonal >= 5) && (!left_diag_flag)) {
+				left_diag_flag = true;
+			}
+		}
+		vertical = 0; //с переходом на следующий столбец переменная обнуляется, чтобы начать подсчёт уже для следующего столбца
+		horizontal = 0; //c переходом на следующую строку переменная обнуляется, чтобы начать подсчет уже для следующей строки
+	}
+
+	if (hor_flag) {
+		cout << endl << "Победа крестиков по горизонталям: ";
+		hor.unique();
+		list <int> ::iterator it;
+		for (it = hor.begin(); it != hor.end(); it++) {
+			cout << (*it) << " : ";
+		}
+		cout << endl;
+	}
+
+	if (vert_flag) {
+		cout << endl << "Победа крестиков по вертикалям: ";
+		vert.unique();
+		list <int> ::iterator it;
+		for (it = vert.begin(); it != vert.end(); it++) {
+			cout << (*it) << " : ";
+		}
+		cout << endl;
+	}
+
+	if (right_diag_flag) {
+		cout << "Победа крестиков по главной диагонали." << endl;
+	}
+	if (left_diag_flag) {
+		cout << "Победа крестиков по побочной диагонали." << endl;
+	}
+	if ((!hor_flag) && (!vert_flag) && (!right_diag_flag) && (!left_diag_flag)) {
+		cout << "В этой игре крестики не одержали победу" << endl;
+	}
+	return 0;
+}
+
+//функция для проверки условия для вектора
+int check_vect(vector<vector<char>> vct, int m, int n) {
+	bool hor_flag = false;
+	bool vert_flag = false;
+	bool right_diag_flag = false;
+	bool left_diag_flag = false;
+
+	int horizontal = 0;
+	int vertical = 0;
+	int right_diagonal = 0;
+	int left_diagonal = 0;
+
+	list <int> vert; //список с номерами вертикалей, на которых было получено >= 5 крестиков 
+	list <int> hor; //cписок с номерами горизонталей, на которых было получено >= 5 крестиков 
+
+	for (int i = 0; i < n; i++) { //по строке
+		for (int j = 0; j < m; j++) {  //по столбцу
+
+
+			//перебор по вертикали
+			if (vct[j][i] == 'x') {
+				vertical++;
+			}
+			else if (vct[j][i] != 'x') {
+				vertical = 0;
+			}
+
+			if (vertical == 5) {
+				vert_flag = true;
+				vert.insert(vert.end(), i);
+			}
+
+
+
+			//перебор по горизонтали
+			if (vct[i][j] == 'x') {
+				horizontal++;
+			}
+			else {
+				horizontal = 0;
+			}
+
+			if (horizontal >= 5) {
+				hor_flag = true;
+				hor.insert(hor.end(), i);
+			}
+
+
+			//перебор по правой диагонали
+			if (i == j) {
+				if (vct[i][j] == 'x') {
+					right_diagonal++;
+				}
+				else {
+					right_diagonal = 0;
+				}
+			}
+
+			if ((right_diagonal >= 5) && (!right_diag_flag)) {
+				right_diag_flag = true;
+			}
+
+
+			//перебор по левой диагонали
+			if (i + j == m - 1) {
+				if (vct[i][j] == 'x') {
+					left_diagonal++;
+				}
+				else {
+					left_diagonal = 0;
+				}
+			}
+
+			if ((left_diagonal >= 5) && (!left_diag_flag)) {
+				left_diag_flag = true;
+			}
+		}
+		vertical = 0; //с переходом на следующий столбец переменная обнуляется, чтобы начать подсчёт уже для следующего столбца
+		horizontal = 0; //c переходом на следующую строку переменная обнуляется, чтобы начать подсчет уже для следующей строки
+	}
+
+	if (hor_flag) {
+		cout << endl << "Победа крестиков по горизонталям: ";
+		hor.unique();
+		list <int> ::iterator it;
+		for (it = hor.begin(); it != hor.end(); it++) {
+			cout << (*it) << " : ";
+		}
+		cout << endl;
+	}
+
+	if (vert_flag) {
+		cout << endl << "Победа крестиков по вертикалям: ";
+		vert.unique();
+		list <int> ::iterator it;
+		for (it = vert.begin(); it != vert.end(); it++) {
+			cout << (*it) << " : ";
+		}
+		cout << endl;
+	}
+
+	if (right_diag_flag) {
+		cout << "Победа крестиков по главной диагонали." << endl;
+	}
+	if (left_diag_flag) {
+		cout << "Победа крестиков по побочной диагонали." << endl;
+	}
+	if ((!hor_flag) && (!vert_flag) && (!right_diag_flag) && (!left_diag_flag)) {
+		cout << "В этой игре крестики не одержали победу" << endl;
+	}
+	return 0;
+}
+
 
 int main() {
 	setlocale(LC_ALL, "rus");
@@ -414,8 +541,8 @@ int main() {
 	}
 
 	int Q; //выбор типа массива 
-	cout << "Выберите тип массива для работы: " << endl << "1 - статический массив;" << endl << "2 - динамический массив; " << endl << "3 - вектор;" << endl <<  "Ввод: "; 
-	cin >> Q; 
+	cout << "Выберите тип массива для работы: " << endl << "1 - статический массив;" << endl << "2 - динамический массив; " << endl << "3 - вектор;" << endl << "Ввод: ";
+	cin >> Q;
 
 	if (Q == 1) {
 
@@ -439,7 +566,7 @@ int main() {
 		//динамический массив 
 
 		int E; //выбор типа ввода
-		cout << endl <<  "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+		cout << endl << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
 		cin >> E;
 		if (E == 1) {
 			char** arr = simple_input_din(m, n);
@@ -451,13 +578,13 @@ int main() {
 		}
 	}
 	else {
-		 
+
 		//вектор
 
 
 		vector<vector<char>> vct(n, vector<char>(m));
 		int R; //выбор типа ввода
-		cout << endl <<  "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+		cout << endl << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
 		cin >> R;
 		if (R == 1) {
 			simple_input_vect(m, n, vct);
@@ -468,5 +595,4 @@ int main() {
 		check_vect(vct, m, n);
 	}
 }
-
 
