@@ -5,6 +5,7 @@
 #include <vector>;
 #include <list>;
 
+
 using namespace std;
 
 #define M 100 //для строк
@@ -526,73 +527,162 @@ int check_vect(vector<vector<char>> vct, int m, int n) {
 	return 0;
 }
 
+void simple_matrix_input(int equation, int variable, vector<vector<double>>& vct) {
+	//ввод расширенной матрицы 
+	cout << "Введите расширенную матрицу системы уравнений" << endl;
+	for (int i = 0; i < equation; i++) {
+		for (int j = 0; j <= variable; j++) {
+			cin >> vct[i][j];
+		}
+	}
+}
+void simple_matrix_output(int equation, int variable, vector<vector<double>>& vct) {
+	//вывод расширенной матрицы
+	cout << "Полученная матрица: " << endl;
+	for (int i = 0; i < equation; i++) {
+		for (int j = 0; j <= variable; j++) {
+			cout << vct[i][j] << " : ";
+		}
+		cout << endl;
+	}
+}
+
+void decision(int equation, int variable, vector<vector<double>>& vct, vector<double>& ans) {
+	for (int k = 0; k < equation - 1; k++) { //перебор по строкам
+		for (int i = k + 1; i < equation; i++) {
+			double coeff = -vct[i][k] / vct[k][k];
+			for (int j = k; j <= equation; j++) {
+				vct[i][j] += coeff * vct[k][j];
+			}
+		}
+	}
+	cout << endl;
+	cout << "Полученная треугольная матрица: " << endl;
+	for (int i = 0; i < equation; i++) {
+		for (int j = 0; j <= variable; j++) {
+			cout << vct[i][j] << "  :  ";
+		}
+		cout << endl;
+	}
+
+	//обратная подстановка 
+	for (int i = equation - 1; i >= 0; i--) {
+		ans[i] = vct[i][equation];
+		for (int j = i + 1; j < equation; j++) {
+			ans[i] -= vct[i][j] * ans[j];
+		}
+		ans[i] /= vct[i][i];
+	}
+	//вывод решения 
+	cout << "Решение системы: " << endl;
+	for (int i = 0; i < equation; i++) {
+		cout << "x[" << i << "] = " << ans[i] << endl;
+	}
+}
 
 int main() {
 	setlocale(LC_ALL, "rus");
 	int m, n; //строки, столбцы
+	int task;
 
-	cout << "Введите количество строк и столбцов массива: : ";
-	cin >> n >> m;
+	cout << "Введте номер задачи (1/2): ";
+	cin >> task;
 
-	if ((m < 5) || (n < 5)) {
-		cout << "В этой игре условие победы невыполнимо" << endl << "Конец!" << endl;
-		return 0;
+	if (task == 1) {
+		cout << "Введите количество строк и столбцов массива: : ";
+		cin >> n >> m;
 
-	}
+		if ((m < 5) || (n < 5)) {
+			cout << "В этой игре условие победы невыполнимо" << endl << "Конец!" << endl;
+			return 0;
+		}
 
-	int Q; //выбор типа массива 
-	cout << "Выберите тип массива для работы: " << endl << "1 - статический массив;" << endl << "2 - динамический массив; " << endl << "3 - вектор;" << endl << "Ввод: ";
-	cin >> Q;
+		int Q; //выбор типа массива 
+		cout << "Выберите тип массива для работы: " << endl << "1 - статический массив;" << endl << "2 - динамический массив; " << endl << "3 - вектор;" << endl << "Ввод: ";
+		cin >> Q;
 
-	if (Q == 1) {
+		if (Q == 1) {
 
-		//статический массив
+			//статический массив
 
-		char arr[M][N];
+			char arr[M][N];
 
-		int W; //выбор типа ввода
-		cout << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
-		cin >> W;
-		if (W == 1) {
-			simple_input_stat(m, n, arr);
+			int W; //выбор типа ввода
+			cout << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+			cin >> W;
+			if (W == 1) {
+				simple_input_stat(m, n, arr);
+			}
+			else {
+				random_input_stat(m, n, arr);
+			}
+			check_stat(arr, m, n);
+		}
+		else if (Q == 2) {
+
+			//динамический массив 
+
+			int E; //выбор типа ввода
+			cout << endl << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+			cin >> E;
+			if (E == 1) {
+				char** arr = simple_input_din(m, n);
+				check_din(arr, n, m);
+			}
+			else {
+				char** arr = random_input_din(m, n);
+				check_din(arr, n, m);
+			}
 		}
 		else {
-			random_input_stat(m, n, arr);
-		}
-		check_stat(arr, m, n);
-	}
-	else if (Q == 2) {
 
-		//динамический массив 
+			//вектор
 
-		int E; //выбор типа ввода
-		cout << endl << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
-		cin >> E;
-		if (E == 1) {
-			char** arr = simple_input_din(m, n);
-			check_din(arr, n, m);
-		}
-		else {
-			char** arr = random_input_din(m, n);
-			check_din(arr, n, m);
+			vector<vector<char>> vct(n, vector<char>(m));
+			int R; //выбор типа ввода
+			cout << endl << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
+			cin >> R;
+			if (R == 1) {
+				simple_input_vect(m, n, vct);
+			}
+			else {
+				random_input_vect(m, n, vct);
+			}
+			check_vect(vct, m, n);
 		}
 	}
-	else {
+	else if (task == 2) {
+		int variable;
+		int equation;
+		setlocale(LC_ALL, "Russian");
 
-		//вектор
 
+		cout << "Введите количество переменных системы линейных уравнений: ";
+		cin >> variable;
+		cout << "Введите количество уравнений системы линейных уравнений: ";
+		cin >> equation;
 
-		vector<vector<char>> vct(n, vector<char>(m));
-		int R; //выбор типа ввода
-		cout << endl << "Выберите тип ввода: " << endl << "1 - ручной ввод; " << endl << "2 - случайная генерация" << endl << "Ввод: ";
-		cin >> R;
-		if (R == 1) {
-			simple_input_vect(m, n, vct);
+		vector<vector<double>> vct(equation, vector<double>(variable + 1));
+		vector<double> ans(50);
+
+		if ((variable <= 0) || (equation <= 0)) {
+			cout << "Невозможно решить систему линейных уравнений.";
+			return 0;
 		}
-		else {
-			random_input_vect(m, n, vct);
-		}
-		check_vect(vct, m, n);
+		simple_matrix_input(equation, variable, vct);
+		simple_matrix_output(equation, variable, vct);
+		decision(equation, variable, vct, ans);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
 
