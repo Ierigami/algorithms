@@ -1,0 +1,61 @@
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+void find_common_words(string sentence1, string sentence2) {
+    vector<string> words1, words2, common_words;
+
+    // разбиваем предложения на слова
+    string word = "";
+    for (int i = 0; i < sentence1.length(); i++) {
+        if (sentence1[i] == ' ') {
+            words1.push_back(word);
+            word = "";
+        } else {
+            word += sentence1[i];
+        }
+    }
+    words1.push_back(word);
+
+    word = "";
+    for (int i = 0; i < sentence2.length(); i++) {
+        if (sentence2[i] == ' ') {
+            words2.push_back(word);
+            word = "";
+        } else {
+            word += sentence2[i];
+        }
+    }
+    words2.push_back(word);
+
+    // находим общие слова
+    for (int i = 0; i < words1.size(); i++) {
+        for (int j = 0; j < words2.size(); j++) {
+            if (words1[i] == words2[j]) {
+                common_words.push_back(words1[i]);
+            }
+        }
+    }
+
+    // выводим результат
+    if (common_words.size() > 0) {
+        cout << "Общие слова: ";
+        for (int i = 0; i < common_words.size(); i++) {
+            cout << common_words[i] << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "Общих слов нет" << endl;
+    }
+}
+
+int main() {
+    string sentence1 = "Я люблю гулять в парке";
+    string sentence2 = "В парке много зелени и цветов";
+    find_common_words(sentence1, sentence2);
+    return 0;
+}
