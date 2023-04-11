@@ -1,0 +1,71 @@
+#include <iostream>
+#include <stdlib.h>
+#include "stdio.h"
+#include <string.h>
+#include <vector>;
+#include <list>;
+#if defined(_WIN32) || defined(__WIN32__) || defined(WIN32)
+#define _CRT_SECURE_NO_WARNINGS
+#pragma warning(disable:4996)
+#endif
+
+
+using namespace std;
+
+void slova1(char* s, char* s1)
+{
+	char slovo[20]; //слово из первого массива
+	char sec_word[20]; //слово из второго массива 
+	int i, j, k, l; i = 0; j = 0; k = 0; l = 0;
+
+	//i - переменная полного прохода по первому массиву, j - переменная полного прохода по второму массиву, 
+	//k - переменная для добавления слова в slovo, l - переменная для добавления второго слова в sec_word
+	while (s[i] != '\0')	//пока первый массив не закончен
+	{   
+		//k = 0; //каждый раз слово вводим в slovo с нулевого индекса 
+
+		while (s[i] != ' ' && s[i] != '\0'){ //пока в первом массиве не закончилось первое слово
+			slovo[k] += s[i]; //добавляем первое слово в slovo
+			i++; k++;
+		}
+
+		j = 0; //обнулим j, так как каждый раз второй массив проходится сначала
+
+		while (s1[j] != '\0') {	//пока второй массив не закончен
+			//l = 0; //кажждый раз вводим в sec_word слово с нулевого индекса
+			while (s1[j] != ' ' && s1[j] != '\0') {  //пока не найдено первое слово второго массива
+				sec_word[l] += s1[j];
+				l++; j++;
+			}
+			if (strcmp(slovo, sec_word)==0) {
+				puts(slovo);
+			}
+			
+			sec_word[l] = '\0';
+		}
+		slovo[k] = '\0';
+	}
+}
+
+
+void compare_func() {
+	
+}
+
+int main()
+{
+	setlocale(0, "");
+	char s[80];
+	char s1[80];
+
+	cout << "Введите предложение до переноса на строку на английской раскладке" << endl;
+	gets_s(s);
+
+	cout << "Введите второе предложение до переноса на английской раскладке" << endl;
+	gets_s(s1);
+
+	list <char> names;
+
+	slova1(s, s1);
+}
+	
