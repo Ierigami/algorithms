@@ -1,0 +1,20 @@
+#include "iostream"
+using namespace std;
+struct Window {
+	char cinema[50];
+	char film[50];
+	unsigned int time, date, cost;
+};
+
+void PrintTable(Window* table, int lines) {
+	cout << "---------------------------------------------------------------------------------------------" << endl;
+	cout << "| Кинотеатр  |" << "   Фильм    |" << "   Начало    |" << "    Дата     |" << "  Стоимость |";
+	cout << "---------------------------------------------------------------------------------------------" << endl;
+	
+	//проход по таблице
+	for (int i = 0; i < lines; i++) {
+		cout.width(0);
+	}
+
+		 
+}
