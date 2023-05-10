@@ -1,77 +1,64 @@
-#include "iostream"
+#include <iostream>;
+#include "C:\Users\User\Desktop\Плюсы\Сиаод 4\Header1.h";
 using namespace std;
-struct Window { //структура Window с заданными в ней параметрами кинопоказов
-	char cinema[50];
-	char film[50];
-	unsigned int time, date, cost;
-};
 
-void PrintTable(Window* table, int lines) { //функция вывода таблицы с введенными в нее данными. Параметры: указатель на таблицу(?), количество строк
-	cout << "====================================================================================" << endl;
-	cout << "| Кинотеатр |" << "  Фильм   |" << "  Начало    |" << "    Дата     |" << "  Стоимость   |";
-	cout << "====================================================================================" << endl;
 
-	//проход по таблице
-	for (int i = 0; i < lines; i++) { //мы построчно вводим параметры, указывая необходимые промежутки так, чтобы таблица была ровной
-		cout.width(0);
-		cout << "| " << table[i].cinema;  //table[i].cinema - берем введенное значение, обращаемся к структуре
-		cout.width(16 - strlen(table[i].cinema));
+int main() {
 
-		cout << "| " << table[i].film;
-		cout.width(16 - strlen(table[i].film));
+	setlocale(LC_ALL, "Russian");
 
-		cout << "| " << table[i].time;
-		cout.width(4);
+	Session* data = new Session();
+	Session note;
+	int lines = 0;
 
-		cout << "| " << table[i].date;
-		cout.width(4);
+	while (true) {
+		int choice = 0;
+		PrintTable(data, lines);
+		cout << endl << endl;
+		cout << "1. Добавить новый сеанс в конец таблицы." << endl;
+		cout << "2. Вставить запись о сеансе, упорядочив ее по кинотеатру." << endl;
+		cout << "3. Удалить запись о сеансе по дате показа." << endl;
+		cout << "4. Сформировать список кинотеатров, в которых можно посмотреть заданный фильм." << endl;
+		cout << "Выберите действие: ";
+		cin >> choice;
+		cin.ignore();
 
-		cout << "| " << table[i].date;
-		cout.width(4);
-
-		cout << "|" << endl;
-	}
-	cout << "====================================================================================" << endl;
-}
-
-void FillWindow(Window& window) { //ввод значений в поля структуры
-	cout << endl;
-	cout << "Заполнение записи для одного показа: " << endl;
-	cout << "Введите название кинотеатра: ";
-	gets_s(window.cinema);
-	cout << "Введите название фильма: ";
-	gets_s(window.film);
-	cout << "Введите время начала показа: ";
-	cin >> window.time;
-	cout << "Введите дату начала показа: ";
-	cin >> window.date;
-	cout << "Введите стоимость показа: ";
-	cin >> window.cost;
-}
-
-void Adds(Window window, Window* table, int lines) { //функция, принимающая запись показа для вставки, саму таблицу и количество ее строк
-	table[lines - 1] = window; //присвоение последней таблице ячейки значения заполненной записи
-}
-
-void DelDate(Window* table, int& lines, int Date) { //Таблица, строки таблицы, заданная дата
-	for (int i = 0; i < lines; i++) { //проходимся по строкам
-		if (table[i].date == Date) { //если обнаружена запись с такой датой, под индексом i
-			for (int j = i; j < lines; j++) { //то мы начинаем перебор от i до конца таблицы
-				table[j] = table[j + 1]; //и сдвигаем все оставшиеся киносеансы влево, тем самым удаляя i-й элемент
-			}
-			lines--;
-			i--;
+		if (choice == 1) {
+			FillWindow(note); //вводим сеанс 
+			lines++; //добавляем строку
+			data = (Session*)realloc(data, (lines) * sizeof(Session)); //увеличиваем размер динамического массива
+			Adds(note, data, lines); //добавлям запись в таблицу
+			
+		}
+		else if (choice == 2) {
+			FillWindow(note); //вводим сеанс
+			lines++; //добавляем строку
+			data = (Session*)realloc(data, (lines) * sizeof(Session)); //увеличиваем размер динамического массива
+			AddByCinema(note, data, lines); //добавляем запись в таблицу учитывая названия кинотеатров
+		}
+		else if (choice == 3) {
+			unsigned int MONTH;
+			unsigned int NUM;
+			int Date = 0;
+			cout << "Введите число месяца: ";
+			cin >> NUM;
+			cout << endl << "Введите месяц: ";
+			cin >> MONTH;
+			DelDate(data, lines, NUM, MONTH); //удаление сеанса
+			data = (Session*)realloc(data, (lines) * sizeof(Session)); //уменьшение размера динамического массива
+		}
+		else if (choice == 4) {
+			char Film[20];
+			int count = lines;
+			Session* finds = new Session [count]; //задаем список размером по количеству строк 
+			cout << endl;
+			cout << "Введите название фильма: ";
+			gets_s(Film);
+			Lists(data, count, finds, Film); //заполняет список
+			cout << "Таблица кинотеатров по выбранному фильму: " << endl;
+			PrintTable(finds, count);
+			delete[] finds;
 		}
 	}
-}
 
-void Lists(Window* table, int& lines, Window* finds, auto Film) {
-	int iterator = 0;
-	for (int i = 0; i < lines, i++) {
-		if (!strcmp(table[i].film, Film)) {
-			finds[iterator] = table[i];
-			iterator++;
-		}
-	}
-	lines = iterator;
 }
