@@ -1,6 +1,7 @@
+#pragma once
 // Сиаод 5.cpp 
 #include <iostream>
-#include <string>
+#include <string.h>
 using namespace std;
 
 struct Node {
@@ -16,7 +17,8 @@ struct list {
 
     bool is_empty() {
         return head == nullptr;
-    }
+    };
+
 
     void push_back(char data) { //добавляет 1 элемент в конец списка
         Node* node = new Node(data); //создаем новый элемент списка (текущий)
@@ -34,7 +36,7 @@ struct list {
         if (is_empty()) {
             return;
         }
-        Node* node = head; 
+        Node* node = head;
         while (node) {
             cout << node->data << " : ";
             node = node->next;
@@ -63,54 +65,40 @@ struct list {
         return (n == k) ? node : NULL;
     };
 
-    void del_first() { //функция удаления первого элемента
-        if (head == NULL) return;
-        if (head == tail) {
-            delete tail;
-            head = tail = NULL;
-            return;
-        }
-        Node* node = head;
-        head = node->next;
+};
+
+void create_list(list& first) {
+    cout << "Введите количество элементов списка : ";
+    int len;
+    char d;
+    cin >> len;
+    if (len <= 0) {
+        return;
     }
 
-    void del_last() { //функция удаления последнего элемента
-        if (tail == NULL) return;
-        if (head == tail) {
-            delete tail;
-            head = tail = NULL;
-            return;
-        }
-        Node* node = head;
-       /* while (node->next != tail) {
-            node->next;
-        }
-        node->next = NULL;
-        delete tail;
-        tail = node;*/
-        for (; node->next != tail; node = node->next) {
-        }
-        node->next = NULL;
-        delete tail;
-        tail = node;
-    }
+    cout << "Введите в строку исходное количество элементов списка : ";
+    for (int i = 0; i < len; i++) {
+        cin >> d;
+        first.push_back(d);
+    };
+
+}
+void push_from_the_end(list first, list second) { //функция, вставляющая конечный элемент из списка second в список first 
+    Node* note = second.tail; //мы создаем переменную note и присваиваем ей указатель на конечный элемент второго списка
+    first.push_back(note->data); //затем используя вспомогательную функию push_back добавляем ее в первый список 
 };
 
 string compare_lists(list first, list second) {
-
-    if (first.get_len() != second.get_len()) return "Списки не совпадают по размеру.";
+    if (first.get_len() != second.get_len()) {
+        return "Списки не совпадают по размеру.";
+    }
     for (int i = 0; i < first.get_len(); i++) {
         Node* f = first.get_at(i);
         Node* s = second.get_at(i);
         if (f->data != s->data) return "Списки не совпадают по значениям.";
     }
     return "Списки совпадают.";
-}
-
-void push_from_the_end(list first, list second) { //функция, вставляющая конечный элемент из списка second в список first 
-    Node* note = second.tail; //мы создаем переменную note и присваиваем ей указатель на конечный элемент второго списка
-    first.push_back(note->data); //затем используя вспомогательную функию push_back добавляем ее в первый список 
-}
+};
 
 void del_nums(list& first) {
 
@@ -133,46 +121,64 @@ void del_nums(list& first) {
             curr = curr->next;
         }
     }
+};
+
+int main() {
+    setlocale(LC_ALL, "Rus");
+
+    list L1;
+    list L2;
+    cout << "Введем первый список: " << endl;
+    create_list(L1);
+    cout << endl;
+    cout << "Введем второй список: " << endl;
+    create_list(L2);
+    cout << endl;
+    
+    cout << "Полученные списки: " << endl;
+    cout << "L1: ";
+    L1.print_list();
+    cout << endl;
+    cout << "L2: ";
+    L2.print_list();
+    cout << endl;
+
+    while (true) {
+        cout << "Выберите операцию над списком: " << endl;
+        cout << "1. Проверить на равенство списки L1 и L2." << endl;
+        cout << "2. Вставить в список L1 последний элемент списка L2." << endl;
+        cout << "3. Удалить из списка L2 все элементы, являющиеся цифрами." << endl;
+        cout << "Ввод: ";
+        int Q;
+        cin >> Q;
+
+        if (Q == 1) {
+            cout << compare_lists(L1, L2) << endl;
+        }
+        else if (Q == 2) {
+            push_from_the_end(L1, L2);
+
+            cout << endl << "L1: ";
+            L1.print_list();
+            cout << endl;
+            cout << "L2: ";
+            L2.print_list();
+            cout << endl;
+
+        }
+        else if (Q == 3) {
+            del_nums(L2);
+            cout << endl;
+            cout << "Полученный список L2: ";
+            L2.print_list();
+        }
+        else {
+            cout << "Неверно введенное значение";
+            continue;
+        }
+    }
 }
 
 
 
-    int main() {
 
-        setlocale(LC_ALL, "Rus");
-
-        list A;
-        list B;
-
-        A.push_back('1');
-        A.push_back('2');
-        A.push_back('1');
-        A.push_back('c');
-        A.push_back('3');
-        A.push_back('4');
-/*
-        B.push_back('a');
-        B.push_back('b');
-        B.push_back('c')*/
-
-        A.print_list();
-
-
-        B.print_list();
-
-        cout << endl;
-
-        /*string a = compare_lists(A, B);
-        cout << a;*/
-
-        //push_from_the_end(A, B);
-
-        /*if (isdigit(A.head->data)) {
-            A.del_first();
-        }*/
- 
-
-        del_nums(A);
-        A.print_list();
-       
-    }
